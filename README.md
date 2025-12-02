@@ -25,6 +25,7 @@ chmod +x cron_logger.sh
 
 ```bash
 ./cron_logger.sh <LOG_PATH_PREFIX> "<COMMAND_TO_RUN>" [USER:GROUP]
+```
 
 ### Arguments
 
