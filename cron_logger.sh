@@ -1,6 +1,6 @@
 #!/bin/bash
 # ====================
-# Cron Logger v0.0.2
+# Cron Logger v0.0.2.1
 # ====================
 
 set -e
@@ -18,7 +18,7 @@ C_RESET=$'\e[0m'
 LOG_DIR=$(dirname "$1")
 LOG_FILE_PREFIX=$(basename "$1")
 COMMAND_TO_RUN="$2"
-LOG_OWNER="${3:-pavdig:pavdig}"
+LOG_OWNER="${3:-root:root}"
 RETENTION_DAYS=30
 
 mkdir -p "$LOG_DIR"
