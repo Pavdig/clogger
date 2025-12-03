@@ -1,7 +1,5 @@
 # Clogger (Cron Logger)
 
-**Version:** 0.0.2.1
-
 ## Overview
 **Clogger** is a utility script designed to wrap around standard Linux commands—specifically those run via `cron`. Instead of output disappearing or being mailed to root, Clogger captures `stdout` and `stderr`, prefixes every line with a timestamp, and saves it to a daily log file.
 
@@ -11,7 +9,6 @@ It also handles "housekeeping" by deleting logs older than 30 days and fixing fi
 - **Timestamping:** Uses `awk` to inject a timestamp `[YYYY-MM-DD HH:MM:SS]` into every line of the command's output.
 - **Daily Rotation:** Automatically creates a new log file for each day (e.g., `backup-2025-12-02.log`).
 - **Retention Policy:** Automatically deletes log files older than 30 days.
-- **Visuals:** Adds colored start/end markers to the log for better readability.
 - **Permissions:** Can enforce specific User:Group ownership on the generated log file (useful when the cron job runs as root but you want to read logs as a normal user).
 
 ## Installation
