@@ -1,56 +1,72 @@
 # Clogger (Cron Logger)
 
 ## Overview
-**Clogger** is a utility script designed to wrap around standard Linux commands—specifically those run via `cron`. Instead of output disappearing or being mailed to root, Clogger captures `stdout` and `stderr`, prefixes every line with a timestamp, and saves it to a daily log file.
+**Clogger** is a robust utility script designed to manage and log `cron` jobs. It acts as a wrapper around standard Linux commands, capturing `stdout` and `stderr` into timestamped daily log files.
 
-It also handles "housekeeping" by deleting logs older than 30 days and fixing file permissions if run as root.
+## 🚀 Features
 
-## Features
-- **Timestamping:** Uses `awk` to inject a timestamp `[YYYY-MM-DD HH:MM:SS]` into every line of the command's output.
-- **Daily Rotation:** Automatically creates a new log file for each day (e.g., `backup-2025-12-02.log`).
-- **Retention Policy:** Automatically deletes log files older than 30 days.
-- **Permissions:** Can enforce specific User:Group ownership on the generated log file (useful when the cron job runs as root but you want to read logs as a normal user).
+- **Interactive Menu:** Manage jobs via a visual menu (List, Add, Edit, Remove).
+- **Dual Mode:** Works as both an interactive manager and a command-line wrapper.
+- **Smart Timestamping:** Injects `[YYYY-MM-DD HH:MM:SS]` into every line of output.
+- **Daily Rotation & Retention:** Automatically rotates daily logs and deletes files older than 30 days.
+- **Input Sanitization:** Automatically detects and fixes syntax errors (like double quotes) in commands.
+- **Root Awareness:** When run as root, allows specifying a different owner for the generated log files (e.g., `user:group`), defaulting to the `SUDO_USER`.
 
-## Installation
-Ensure the script is executable:
+## 🛠️ Installation
 
-```bash
-chmod +x cron_logger.sh
-```
+1. **Clone the repo:**
+   ```bash
+   git clone https://github.com/Pavdig/clogger.git
+   cd clogger
+2. **Make executable:**
+   ```bash
+   chmod +x cron_logger.sh
+   ```
+3. **Run:**
+   ```bash
+   ./cron_logger.sh
+   ```
 
-## Usage
+## 📖 Usage
 
-```bash
-./cron_logger.sh <LOG_PATH_PREFIX> "<COMMAND_TO_RUN>" [USER:GROUP]
-```
-
-### Arguments
-
-1. **LOG_PATH_PREFIX**: The full path including the desired filename prefix.
-   - Example: `/home/user/logs/myjob/backup` will create logs inside `/home/user/logs/myjob/` named `backup-YYYY-MM-DD.log`.
-2. **COMMAND_TO_RUN**: The actual command you want to execute.
-   - **Important:** Wrap this in double quotes `"`.
-3. **USER:GROUP** *(Optional)*: The owner of the log file. Defaults to `root:root` if skipped.
-
-## Examples
-
-### 1. Simple Manual Test
-Run a Docker pull command and log it to your logs directory:
+### 1. Interactive Mode (Recommended)
+Run the script without arguments to open the menu. This allows you to manage schedules visually.
 
 ```bash
-./cron_logger.sh /home/user/logs/docker_updates "docker compose pull" user:user
+./cron_logger.sh
 ```
+*   **List:** View all cron jobs managed by Clogger.
+*   **Add:** step-by-step wizard to create a new job.
+*   **Edit:** Modify existing jobs (preserves current values for easy editing).
+*   **Remove:** Safely delete jobs from crontab.
 
-### 2. Crontab Usage
-To run a backup script every day at 3 AM and keep the logs tidy:
+### 2. Wrapper Mode (Standard)
+Used internally by cron, but can be run manually.
 
 ```bash
-0 3 * * * /home/user/scripts/clogger/cron_logger.sh /home/user/logs/backups/daily_backup "/home/user/scripts/dtools/backup_script.sh" user:user
+./cron_logger.sh <LOG_PATH_PREFIX> "<COMMAND>" [USER:GROUP]
+```
+*   **Example:**
+    ```bash
+    ./cron_logger.sh /home/user/logs/backup "tar -czf..." user:user
+    ```
+
+### 3. Failsafe Mode (Quick)
+If you only provide a command, Clogger saves logs to a default folder in the current directory.
+
+```bash
+./cron_logger.sh "<COMMAND>"
 ```
 
-## Configuration
-The log retention period is currently hardcoded in the script. To change it, edit the `RETENTION_DAYS` variable near the top of the file:
+## 🛟 Help
+To see a quick usage guide:
 
+```bash
+./cron_logger.sh --help
+```
+
+## 📂 Configuration
+The log retention period is defined in the script header:
 ```bash
 RETENTION_DAYS=30
 ```
@@ -58,3 +74,4 @@ RETENTION_DAYS=30
 ## Requirements
 - Bash
 - Awk
+- Crontab
