@@ -1,15 +1,15 @@
 # Clogger (Cron Logger)
 
 ## Overview
-**Clogger** is a robust utility script designed to manage and log `cron` jobs. It acts as a wrapper around standard Linux commands, capturing `stdout` and `stderr` into timestamped daily log files.
+**Clogger** is a small utility script designed to manage and log `cron` jobs. It acts as a wrapper around standard Linux commands, capturing `stdout` and `stderr` into timestamped daily log files.
 
 ## 🚀 Features
 
 - **Interactive Menu:** Manage jobs via a visual menu (List, Add, Edit, Remove).
 - **Dual Mode:** Works as both an interactive manager and a command-line wrapper.
-- **Smart Timestamping:** Injects `[YYYY-MM-DD HH:MM:SS]` into every line of output.
+- **Output Control:** Choose to capture full command output (`stdout`/`stderr`) or run silently (logging only start/finish status).
+- **Timestamping:** Injects `[YYYY-MM-DD HH:MM:SS]` into every line of output.
 - **Daily Rotation & Retention:** Automatically rotates daily logs and deletes files older than 30 days.
-- **Input Sanitization:** Automatically detects and fixes syntax errors (like double quotes) in commands.
 - **Root Awareness:** When run as root, allows specifying a different owner for the generated log files (e.g., `user:group`), defaulting to the `SUDO_USER`.
 
 ## 🛠️ Installation
@@ -36,7 +36,7 @@ Run the script without arguments to open the menu. This allows you to manage sch
 ./cron_logger.sh
 ```
 *   **List:** View all cron jobs managed by Clogger.
-*   **Add:** step-by-step wizard to create a new job.
+*   **Add:** Step-by-step wizard to create a new job, including options for log capturing.
 *   **Edit:** Modify existing jobs (preserves current values for easy editing).
 *   **Remove:** Safely delete jobs from crontab.
 
@@ -44,11 +44,21 @@ Run the script without arguments to open the menu. This allows you to manage sch
 Used internally by cron, but can be run manually.
 
 ```bash
-./cron_logger.sh <LOG_PATH_PREFIX> "<COMMAND>" [USER:GROUP]
+./cron_logger.sh <LOG_PATH_PREFIX> "<COMMAND>" [USER:GROUP] [CAPTURE_OUTPUT]
 ```
-*   **Example:**
+*   **Arguments:**
+    *   `LOG_PATH_PREFIX`: Path to log directory + filename prefix.
+    *   `COMMAND`: The actual command to run.
+    *   `USER:GROUP`: (Optional) Ownership of the log file.
+    *   `CAPTURE_OUTPUT`: (Optional) `true` (default) or `false`.
+
+*   **Example (Verbose):**
     ```bash
-    ./cron_logger.sh /home/user/logs/backup "tar -czf..." user:user
+    ./cron_logger.sh /home/user/logs/backup "tar -czf..." user:user true
+    ```
+*   **Example (Silent - only log start/finish):**
+    ```bash
+    ./cron_logger.sh /home/user/logs/backup "tar -czf..." user:user false
     ```
 
 ### 3. Failsafe Mode (Quick)
