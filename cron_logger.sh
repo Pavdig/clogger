@@ -3,7 +3,7 @@
 # --- Cron Logger ---
 # ===================
 
-SCRIPT_VERSION=v0.0.4
+SCRIPT_VERSION=v0.0.5
 
 SCRIPT_PATH=$(readlink -f "$0")
 DEFAULT_LOG_BASE="${HOME}/logs"
@@ -201,8 +201,8 @@ schedule_picker() {
     if [ -n "$current_val" ]; then
         echo -e "   0) ${C_CYAN}Keep Current${C_RESET} [${current_val}]"
     fi
-    echo "   1) Every Minute (* * * * *)"
-    echo "   2) Hourly (0 * * * *)"
+    echo "   1) Hourly (0 * * * *)"
+    echo "   2) Every 6 hours (0 */6 * * *)"
     echo "   3) Daily at Midnight (0 0 * * *)"
     echo "   4) Daily at 3 AM (0 3 * * *)"
     echo "   5) Weekly (Sunday) (0 0 * * 0)"
@@ -213,13 +213,13 @@ schedule_picker() {
     case "$choice" in
         0) 
             if [ -n "$current_val" ]; then result_var="$current_val"; else result_var=""; fi ;;
-        1) result_var="* * * * *" ;;
-        2) result_var="0 * * * *" ;;
+        1) result_var="0 * * * *" ;;
+        2) result_var="0 */6 * * *" ;;
         3) result_var="0 0 * * *" ;;
         4) result_var="0 3 * * *" ;;
         5) result_var="0 0 * * 0" ;;
         6) 
-            read -p "\n${C_CYAN}Enter cron expression ${C_GRAY}(e.g. '@daily')${C_RESET}: " custom
+            read -p "${C_CYAN}Enter cron expression ${C_GRAY}(e.g. '@daily')${C_RESET}: " custom
             result_var="$custom" 
             ;;
         *) result_var="" ;;
