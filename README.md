@@ -1,3 +1,4 @@
+![Crontab](https://img.shields.io/badge/Manages-Crontab-2496ED?logo=crontab&logoColor=white)
 ![Bash](https://img.shields.io/badge/Language-Bash-4EAA25?logo=gnu-bash&logoColor=white)
 [![Version](https://img.shields.io/badge/version-v0.0.5-blue)](https://github.com/Pavdig/clogger)
 [![GitHub last commit](https://img.shields.io/github/last-commit/Pavdig/clogger)](https://github.com/Pavdig/clogger/commits/main)
